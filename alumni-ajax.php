@@ -1,6 +1,31 @@
 <?php
 	include 'includes/connect.php';
 	header('Access-Control-Allow-Origin: *');
+
+    require('../alumni_admin/includes/db/database_functions.php');
+    require('../alumni_admin/includes/db/Database.php');
+    $database = new Database();
+    $database->connect();
+
+
+//	$status = isIdNumberExist($database, 'AC121', '3456', '7890');
+//	if($status == true) {
+//		print "exist ";
+//	}else {
+//		print "not exist";
+//	}
+
+
+
+
+
+
+
+//exit;
+
+
+
+
 	$reply = array();
 ?>
 
@@ -11,18 +36,28 @@ if(isset($_POST['Check_Alumni_ID']))
 	$id_one = $_POST["id_one"];
 	$id_two = $_POST["id_two"];
 	$id_three = $_POST["id_three"];
-	//QUERY GOES HERE
-	$sql = "SELECT * FROM alumni WHERE (id_no_one = '".$id_one."' AND id_no_two = '".$id_two."' AND id_no_three = '".$id_three."') AND (username='' AND email='' AND fname='' AND mname='' AND lname='') ";
 
-	if (mysqli_num_rows(mysqli_query($con,$sql))>0)
-	{
+
+	$status = isIdNumberExist($database, $id_one, $id_two, $id_three);
+	if($status == true) {
 		$reply[0] = array('message'=>'ok');
-
-	} else 
-	{
+	}else {
 		$reply[0] = array('message'=>'not');
 	}
-	echo json_encode($reply);	
+	echo json_encode($reply);
+
+//	//QUERY GOES HERE
+//	$sql = "SELECT * FROM alumni WHERE (id_no_one = '".$id_one."' AND id_no_two = '".$id_two."' AND id_no_three = '".$id_three."') AND (username='' AND email='' AND fname='' AND mname='' AND lname='') ";
+//
+//	if (mysqli_num_rows(mysqli_query($con,$sql))>0)
+//	{
+//		$reply[0] = array('message'=>'ok');
+//
+//	} else
+//	{
+//		$reply[0] = array('message'=>'not');
+//	}
+//	echo json_encode($reply);
 }
 
 /*--------------------------------------------------------------CHECK ALUMNI USERNAME IF EXIST*/
